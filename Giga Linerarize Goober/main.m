@@ -1,0 +1,85 @@
+clear; clc;
+
+pdf = [
+    1.63 1.67 1.66; 
+    0.61 0.42 0.5; 
+    0.41 0.42 0.42;
+    0.27 0.42 0.35; 
+    0.41, 0.42, 0.42;
+    0.15 0.1 0.12; 
+    0.07 0.11 0.09;
+    0.07 0.1 0.08; 
+    0.16 0.11 0.13;
+];
+
+E = [
+        0 0;
+        1 0;
+        0 1;
+        -1 0;
+        0 -1;
+        1 1;
+        -1 1;
+        -1 -1;
+        1 -1;
+    ];
+
+E = transpose(E);
+
+row = 3;
+col = 3;
+
+E2 = zeros(2, 9, row, col);
+for r = 1:col
+    for c = 1:row
+        E2(:, :, r, c) = E;
+    end
+end
+
+f = zeros(9, row, col);
+
+for i = 1:col
+    f(:, :, i) = pdf;
+end
+
+f2 = f;
+
+num = 100000;
+
+rho_list = zeros(1, row, col, num);
+u_list = zeros(2, 3, col, row, num);
+f_list = zeros(9, col, row, num);
+
+t = 0.6;
+
+tic
+
+[rho, u] = rhoNu(f, E2);
+
+for i = 1:num
+    
+    % If rho/u computed every time then explodes
+    % [rho, u] = rhoNu(f, E2);
+
+    feq = feq_d2q9(rho, u, E2, row, col);
+    
+    fin_u = u(:, :, 1:col, 1:row);
+    
+    % rho_list(:, :, :, i) = rho(:, :, :, :);
+    % u_list(:, :, :, :, i) = u(:, :, 1:col, 1:row);
+
+    fs = f - (1/t)*(f - feq(:, :, 1:col, 1:row));
+
+    f_list(:, :, :, i) = f(:, 1:row, 1:col);
+
+    f = fs;
+
+end
+
+toc
+
+[rho2, u2] = rhoNu_worse(f2, E);
+
+guh = squeeze(f_list(1, 1, 1, :));
+
+plot(1:num, guh)
