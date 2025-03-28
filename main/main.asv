@@ -27,7 +27,7 @@ E = [
 E = transpose(E);
 
 row = 3;
-col = 4;
+col = 3;
 
 E2 = zeros(2, 9, row, col);
 for r = 1:col
@@ -58,23 +58,19 @@ for i = 1:num
     
     [rho, u] = rhoNu(f, E2);
 
-    % if i == 1
-    %     u3 = u;
-    % end
-
     % If rho/u computed every time then explodes
     % [rho, u] = rhoNu(f, E2);
 
     feq = feq_d2q9(rho, u, E2, row, col);
     
-    % fin_u = u(:, :, 1:col, 1:row);
+    %fin_u = u(:, :, 1:col, 1:row);
     
     % rho_list(:, :, :, i) = rho(:, :, :, :);
     % u_list(:, :, :, :, i) = u(:, :, 1:col, 1:row);
 
-    fs = f - (1/t)*(f - feq);
+    fs = f - (1/t)*(f - feq(:, :, 1:col, 1:row));
 
-    rho_list(:, :, :, i) = rho(:, 1:row, 1:col);
+    rho_list(:, :, :, i) 
     f_list(:, :, :, i) = f(:, 1:row, 1:col);
 
     f = fs;
@@ -83,6 +79,6 @@ end
 
 toc
 
-guh = squeeze(f_list(1, 1, 1, :));
+guh = squeeze(f_list(2, 1, 1, :));
 
 plot(1:num, guh)
