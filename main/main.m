@@ -78,8 +78,6 @@ end
 
 toc
 
-[rho2, u2] = rhoNu_worse(f2, E);
-
 guh = squeeze(f_list(1, 1, 1, :));
 
 plot(1:num, guh)
