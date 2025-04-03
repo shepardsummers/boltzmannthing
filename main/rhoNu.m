@@ -1,4 +1,5 @@
 function [rho, u] = rhoNu(f, E)
+    % This function is self explainitory
 
     rho = sum (f, 1);
 

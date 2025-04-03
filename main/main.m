@@ -53,8 +53,31 @@ for i = 1:col
     f(:, :, i) = pdf;
 end
 
+% Cs value --> passed into feq function
+cs = 1/sqrt(3);
+
+w = [
+        4/9;
+        1/9;
+        1/9;
+        1/9;
+        1/9;
+        1/36;
+        1/36;
+        1/36;
+        1/36;
+        ];
+    
+% Uneeded
+% w2 = zeros(9, row, col);
+% for r = 1:row
+%     for c = 1:col
+%         w2(:, r, c) = w;
+%     end
+% end
+
 % How many iterations
-num = 50;
+num = 10;
 
 % List creation
 rho_list = zeros(1, row, col, num);
@@ -72,7 +95,7 @@ for i = 1:num
     [rho, u] = rhoNu(f, E2);
 
     % Feq calculations
-    feq = feq_d2q9(rho, u, E2, row, col);
+    feq = feq_d2q9(rho, u, E2, cs, w);
 
     % Keeping track of rho and f values
     rho_list(:, :, :, i) = rho(:, 1:row, 1:col);
