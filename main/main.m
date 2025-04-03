@@ -67,17 +67,9 @@ w = [
         1/36;
         1/36;
         ];
-    
-% Uneeded
-% w2 = zeros(9, row, col);
-% for r = 1:row
-%     for c = 1:col
-%         w2(:, r, c) = w;
-%     end
-% end
 
 % How many iterations
-num = 10;
+num = 50;
 
 % List creation
 rho_list = zeros(1, row, col, num);
